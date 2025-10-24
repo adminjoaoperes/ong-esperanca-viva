@@ -1,4 +1,5 @@
 🌱 ONG Esperança Viva
+
 🧩 Contexto e Relevância
 
 O terceiro setor brasileiro movimenta mais de R$ 15 bilhões por ano e emprega cerca de 3 milhões de pessoas. No entanto, apenas uma pequena parcela das organizações possui presença digital adequada.
