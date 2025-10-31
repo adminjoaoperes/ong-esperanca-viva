@@ -3,52 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Organização sem fins lucrativos dedicada a promover impacto social e sustentabilidade.">
   <title>ONG Esperança Viva</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-  <header>
-    <nav aria-label="Menu principal">
-      <h1 class="logo">ONG Esperança Viva</h1>
-      <ul>
-        <li><a href="index.html">Início</a></li>
-        <li><a href="projetos.html">Projetos</a></li>
-        <li><a href="cadastro.html">Cadastre-se</a></li>
-      </ul>
-    </nav>
+  <!-- ===== MENU PRINCIPAL ===== -->
+  <nav class="main-nav">
+    <button id="navToggle" class="nav-toggle" aria-expanded="false">☰</button>
+    <ul id="navList" class="nav-list">
+      <li><a href="index.html">Início</a></li>
+      <li class="has-submenu">
+        <button class="submenu-toggle" aria-expanded="false">Projetos ▾</button>
+        <ul class="submenu">
+          <li><a href="projetos.html#educacao">Educação</a></li>
+          <li><a href="projetos.html#verde">Verde</a></li>
+        </ul>
+      </li>
+      <li><a href="cadastro.html">Cadastre-se</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+  <header class="hero container">
+    <h1>ONG Esperança Viva</h1>
+    <p>Promovendo solidariedade, educação e sustentabilidade nas comunidades brasileiras.</p>
+    <button class="btn">Saiba Mais</button>
   </header>
 
-  <main>
-    <section id="sobre" aria-labelledby="titulo-sobre">
-      <h2 id="titulo-sobre">Quem Somos</h2>
-      <p>Somos uma organização comprometida com a transformação social por meio de projetos de educação e sustentabilidade.</p>
-      <img src="imagens/equipe.png" alt="Equipe de voluntários da ONG reunida">
-    </section>
-
-    <section id="missao" aria-labelledby="titulo-missao">
-      <h2 id="titulo-missao">Missão, Visão e Valores</h2>
-      <ul>
-        <li><strong>Missão:</strong> Promover inclusão social e cidadania.</li>
-        <li><strong>Visão:</strong> Ser referência em impacto social no Brasil.</li>
-        <li><strong>Valores:</strong> Transparência, Empatia e Sustentabilidade.</li>
-      </ul>
-    </section>
-
-    <section id="contato" aria-labelledby="titulo-contato">
-      <h2 id="titulo-contato">Entre em Contato</h2>
-      <address>
-        <p>E-mail: <a href="mailto:contato@ongesperancaviva.org">contato@ongesperancaviva.org</a></p>
-        <p>Telefone: (11) 99999-9999</p>
-        <p>Endereço: Rua da Solidariedade, 123 – São Paulo/SP</p>
-      </address>
-    </section>
-  </main>
+  <section class="container">
+    <h2>Sobre Nós</h2>
+    <div class="row">
+      <div class="col-12 md-col-6">
+        <p>A ONG Esperança Viva é um projeto social voltado para ações comunitárias, educativas e ambientais, buscando transformar realidades e inspirar novas gerações.</p>
+      </div>
+      <div class="col-12 md-col-6">
+        <img src="imagens/equipe.png" alt="Equipe de voluntários" class="img-responsiva">
+      </div>
+    </div>
+  </section>
 
   <footer>
-    <p>&copy; 2025 ONG Esperança Viva – Todos os direitos reservados.</p>
+    <p>© 2025 ONG Esperança Viva — Todos os direitos reservados.</p>
   </footer>
+
+  <script src="js/ui.js"></script>
 </body>
 </html>
-
