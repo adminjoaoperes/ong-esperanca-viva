@@ -1,0 +1,10 @@
+// Interatividade do menu principal (hambúrguer e submenu)
+document.addEventListener("DOMContentLoaded", () => {
+  const navToggle = document.getElementById("navToggle");
+  const navList = document.getElementById("navList");
+  if (navToggle && navList) {
+    navToggle.addEventListener("click", () => {
+      navList.classList.toggle("open");
+    });
+  }
+});
