@@ -1,101 +1,42 @@
-/* -----------------------------------
-   🌱 ONG Esperança Viva
-   Script de Formulário Interativo
-   Autor: João [Seu Sobrenome]
-   Última atualização: Outubro/2025
------------------------------------ */
-
+// form.js - Validação e consistência dos formulários
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("formCadastro");
+  const form = document.querySelector("form");
+  if (!form) return;
 
-  /* === FUNÇÕES DE MÁSCARA === */
-  const aplicarMascara = (campo, tipo) => {
-    campo.addEventListener("input", () => {
-      let valor = campo.value.replace(/\D/g, ""); // Remove não numéricos
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-      if (tipo === "cpf") {
-        campo.value = valor
-          .replace(/^(\d{3})(\d)/, "$1.$2")
-          .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
-          .replace(/\.(\d{3})(\d)/, ".$1-$2")
-          .slice(0, 14);
-      }
+    const nome = form.querySelector('input[name="nome"]');
+    const email = form.querySelector('input[name="email"]');
+    const msg = form.querySelector('textarea[name="mensagem"]');
+    const erros = [];
 
-      if (tipo === "cep") {
-        campo.value = valor.replace(/^(\d{5})(\d)/, "$1-$2").slice(0, 9);
-      }
+    if (!nome || nome.value.trim().length < 3)
+      erros.push("O nome deve ter pelo menos 3 caracteres.");
+    if (!email || !email.value.includes("@"))
+      erros.push("Digite um e-mail válido.");
+    if (!msg || msg.value.trim().length < 10)
+      erros.push("A mensagem deve ter pelo menos 10 caracteres.");
 
-      if (tipo === "telefone") {
-        campo.value = valor
-          .replace(/^(\d{2})(\d)/g, "($1) $2")
-          .replace(/(\d{5})(\d{4})$/, "$1-$2")
-          .slice(0, 15);
-      }
-    });
-  };
+    const alerta = document.createElement("div");
+    alerta.className = erros.length === 0 ? "alert success" : "alert error";
 
-  /* === APLICAÇÃO DAS MÁSCARAS === */
-  aplicarMascara(document.getElementById("cpf"), "cpf");
-  aplicarMascara(document.getElementById("cep"), "cep");
-  aplicarMascara(document.getElementById("telefone"), "telefone");
-
-  /* === FUNÇÃO DE VALIDAÇÃO === */
-  const validarFormulario = () => {
-    let valido = true;
-    const campos = form.querySelectorAll("input[required]");
-    const mensagens = [];
-
-    campos.forEach((campo) => {
-      if (!campo.value.trim()) {
-        valido = false;
-        mensagens.push(`O campo "${campo.previousElementSibling.textContent}" é obrigatório.`);
-        campo.style.borderColor = "red";
-      } else {
-        campo.style.borderColor = "#bbb";
-      }
-
-      // Validação simples de e-mail
-      if (campo.type === "email" && campo.value) {
-        const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!regexEmail.test(campo.value)) {
-          valido = false;
-          mensagens.push("Digite um e-mail válido.");
-          campo.style.borderColor = "red";
-        }
-      }
-    });
-
-    if (!valido) {
-      exibirMensagem(mensagens.join("\n"), false);
-    }
-
-    return valido;
-  };
-
-  /* === FUNÇÃO PARA EXIBIR MENSAGENS === */
-  const exibirMensagem = (texto, sucesso = true) => {
-    let mensagem = document.getElementById("mensagem-form");
-
-    if (!mensagem) {
-      mensagem = document.createElement("div");
-      mensagem.id = "mensagem-form";
-      mensagem.setAttribute("role", "alert");
-      mensagem.style.marginTop = "1rem";
-      form.appendChild(mensagem);
-    }
-
-    mensagem.textContent = texto;
-    mensagem.style.color = sucesso ? "green" : "red";
-    mensagem.style.fontWeight = "500";
-  };
-
-  /* === ENVIO DO FORMULÁRIO === */
-  form.addEventListener("submit", (evento) => {
-    evento.preventDefault();
-
-    if (validarFormulario()) {
-      exibirMensagem("Cadastro enviado com sucesso! 🎉", true);
+    if (erros.length === 0) {
+      alerta.textContent = "Formulário enviado com sucesso!";
+      localStorage.setItem("cadastroUsuario", JSON.stringify({
+        nome: nome.value,
+        email: email.value,
+        mensagem: msg.value
+      }));
       form.reset();
+    } else {
+      alerta.innerHTML = `<strong>Erros:</strong><ul>${erros.map(e => `<li>${e}</li>`).join("")}</ul>`;
     }
+
+    const anterior = document.querySelector(".alert");
+    if (anterior) anterior.remove();
+    form.insertAdjacentElement("beforebegin", alerta);
+
+    setTimeout(() => alerta.remove(), 6000);
   });
 });
