@@ -1,42 +1,64 @@
-// form.js - Validação e consistência dos formulários
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.querySelector("form");
-  if (!form) return;
+  const form = document.getElementById("formCadastro");
+  const mensagem = document.getElementById("mensagem");
 
+  // Função para exibir mensagens
+  function mostrarMensagem(texto, tipo = "erro") {
+    mensagem.textContent = texto;
+    mensagem.className = tipo;
+    setTimeout(() => mensagem.textContent = "", 4000);
+  }
+
+  // Máscara simples de CPF e telefone
+  const cpfInput = document.getElementById("cpf");
+  const telefoneInput = document.getElementById("telefone");
+  const cepInput = document.getElementById("cep");
+
+  cpfInput.addEventListener("input", () => {
+    cpfInput.value = cpfInput.value
+      .replace(/\D/g, "")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+  });
+
+  telefoneInput.addEventListener("input", () => {
+    telefoneInput.value = telefoneInput.value
+      .replace(/\D/g, "")
+      .replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+  });
+
+  cepInput.addEventListener("input", () => {
+    cepInput.value = cepInput.value
+      .replace(/\D/g, "")
+      .replace(/(\d{5})(\d{3})/, "$1-$2");
+  });
+
+  // Validação em tempo real
+  form.querySelectorAll("input").forEach(input => {
+    input.addEventListener("input", () => {
+      if (!input.checkValidity()) {
+        input.classList.add("erro");
+      } else {
+        input.classList.remove("erro");
+      }
+    });
+  });
+
+  // Envio do formulário
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const nome = form.querySelector('input[name="nome"]');
-    const email = form.querySelector('input[name="email"]');
-    const msg = form.querySelector('textarea[name="mensagem"]');
-    const erros = [];
-
-    if (!nome || nome.value.trim().length < 3)
-      erros.push("O nome deve ter pelo menos 3 caracteres.");
-    if (!email || !email.value.includes("@"))
-      erros.push("Digite um e-mail válido.");
-    if (!msg || msg.value.trim().length < 10)
-      erros.push("A mensagem deve ter pelo menos 10 caracteres.");
-
-    const alerta = document.createElement("div");
-    alerta.className = erros.length === 0 ? "alert success" : "alert error";
-
-    if (erros.length === 0) {
-      alerta.textContent = "Formulário enviado com sucesso!";
-      localStorage.setItem("cadastroUsuario", JSON.stringify({
-        nome: nome.value,
-        email: email.value,
-        mensagem: msg.value
-      }));
-      form.reset();
-    } else {
-      alerta.innerHTML = `<strong>Erros:</strong><ul>${erros.map(e => `<li>${e}</li>`).join("")}</ul>`;
+    if (!form.checkValidity()) {
+      mostrarMensagem("⚠️ Por favor, preencha todos os campos corretamente.");
+      return;
     }
 
-    const anterior = document.querySelector(".alert");
-    if (anterior) anterior.remove();
-    form.insertAdjacentElement("beforebegin", alerta);
+    // Salvar no LocalStorage (simulação de backend)
+    const dados = Object.fromEntries(new FormData(form));
+    localStorage.setItem("cadastroUsuario", JSON.stringify(dados));
 
-    setTimeout(() => alerta.remove(), 6000);
+    form.reset();
+    mostrarMensagem("✅ Cadastro realizado com sucesso!", "sucesso");
   });
 });
