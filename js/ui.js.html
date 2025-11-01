@@ -1,10 +1,11 @@
-// Interatividade do menu principal (hambúrguer e submenu)
+// ui.js - Interações visuais e menu
 document.addEventListener("DOMContentLoaded", () => {
-  const navToggle = document.getElementById("navToggle");
-  const navList = document.getElementById("navList");
-  if (navToggle && navList) {
-    navToggle.addEventListener("click", () => {
-      navList.classList.toggle("open");
+  const toggle = document.getElementById("navToggle");
+  const menu = document.getElementById("navList");
+
+  if (toggle && menu) {
+    toggle.addEventListener("click", () => {
+      menu.classList.toggle("open");
     });
   }
 });
